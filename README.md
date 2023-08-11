@@ -10,6 +10,10 @@ Notes to setup the preoject properly
     $ go mod install
 ```
 
+```sh
+    $ go run /cmd/api/main.go
+```
+
 The project is not using migrations, so you have to execute the sql schemas manually (schemas are inside /sql folder)
 
 
