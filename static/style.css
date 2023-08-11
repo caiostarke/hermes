@@ -1,0 +1,75 @@
+* {
+    border:0 ;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Crimson Text', serif;
+}
+
+.topics {
+    background-color: #0d1321;
+    padding: 30px 100px;
+    margin:0 auto;
+}
+
+.topics h1{
+    color: aliceblue;
+    font-size: 2.9rem;
+    margin-bottom: 30px;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.topics--wrapper {
+    display: grid;
+    gap: 30px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, auto));
+    grid-template-rows: repeat(auto-fit, 280px);
+}
+
+.card {
+    -webkit-box-shadow: 10px 10px 59px -13px rgba(255,0,255,1);
+    -moz-box-shadow: 10px 10px 59px -13px rgba(255,0,255,1);
+    box-shadow: 10px 10px 59px -13px rgba(255,0,255,1);
+    background-color: aliceblue;
+
+    padding: 20px 25px;
+    border-radius: 2%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}   
+
+.topics--card__link {
+    padding: 10px 20px;
+    background-color: rgba(255,0,255,1);
+    color: white;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100px;
+}
+
+.topics--card__link:hover {
+    transition: ease-in 0.7s;
+    background-color: rgba(255,0,255,0.8);
+}
+
+.topics--card__name {
+    font-weight: 800;
+    padding-bottom: 25px;
+    font-size: 1.1rem;
+}
+
+.topics--card__tags{
+    padding-bottom: 15px;
+}
+
+.topics--card__description {
+    padding-bottom: 15px;
+}
+
+
+.span--subtitle {
+    font-weight: 600;
+}
