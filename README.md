@@ -17,5 +17,5 @@ The project is not using migrations, so you have to execute the sql schemas manu
 
 
 ## To add Features
-- [] Create the templates to other pages 
-- [] Add tests 
+- [ ] Create the templates to other pages 
+- [ ] Add tests 
