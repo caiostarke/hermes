@@ -2,81 +2,23 @@ package gin
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
+	"github.com/caiostarke/hermes/study_case"
 	"github.com/gin-gonic/gin"
 )
 
 // Login Page
 func (h *Handler) HomeHandler(c *gin.Context) {
+	studyCases, err := h.StudyCaseService.ListStudyCases()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
 	c.HTML(http.StatusOK, "index.html", gin.H{
-		"topics": []struct {
-			Name        string
-			Tags        string
-			Comment     string
-			Description string
-		}{
-			{
-				Name:        "Study of Linked List",
-				Tags:        "computer science, data structures, algorithms",
-				Description: "Flashcards and resumes about linked lists.",
-			},
-			{
-				Name:        "Study of Hash Table",
-				Tags:        "computer science, data structures, algorithms",
-				Description: "Flashcards and resumes about Hash Table.",
-			},
-			{
-				Name:        "Study of Binary Tree",
-				Tags:        "computer science, data structures, algorithms",
-				Description: "Flashcards and resumes about Binary Tree.",
-			},
-			{
-				Name:        "Study of Bubble Sort",
-				Tags:        "computer science, data structures, algorithms",
-				Description: "Flashcards and resumes about Bubble Sort.",
-			},
-			{
-				Name:        "Study of Linked List",
-				Tags:        "computer science, data structures, algorithms",
-				Description: "Flashcards and resumes about linked lists.",
-			},
-			{
-				Name:        "Study of Hash Table",
-				Tags:        "computer science, data structures, algorithms",
-				Description: "Flashcards and resumes about Hash Table.",
-			},
-			{
-				Name:        "Study of Binary Tree",
-				Tags:        "computer science, data structures, algorithms",
-				Description: "Flashcards and resumes about Binary Tree.",
-			},
-			{
-				Name:        "Study of Bubble Sort",
-				Tags:        "computer science, data structures, algorithms",
-				Description: "Flashcards and resumes about Bubble Sort.",
-			},
-			{
-				Name:        "Study of Linked List",
-				Tags:        "computer science, data structures, algorithms",
-				Description: "Flashcards and resumes about linked lists.",
-			},
-			{
-				Name:        "Study of Hash Table",
-				Tags:        "computer science, data structures, algorithms",
-				Description: "Flashcards and resumes about Hash Table.",
-			},
-			{
-				Name:        "Study of Binary Tree",
-				Tags:        "computer science, data structures, algorithms",
-				Description: "Flashcards and resumes about Binary Tree.",
-			},
-			{
-				Name:        "Study of Bubble Sort",
-				Tags:        "computer science, data structures, algorithms",
-				Description: "Flashcards and resumes about Bubble Sort.",
-			},
-		},
+		"data": studyCases,
 	})
 }
 
@@ -112,6 +54,7 @@ func (h *Handler) CreateStudyCaseHandler(c *gin.Context) {
 
 func (h *Handler) GetStudyCaseHandler(c *gin.Context) {
 	id := c.Param("id")
+	data := study_case.StudyCaseMetadata{}
 
 	studyCase, err := h.StudyCaseService.GetStudyCase(id)
 	if err != nil {
@@ -119,9 +62,26 @@ func (h *Handler) GetStudyCaseHandler(c *gin.Context) {
 		return
 	}
 
+	flashcards, err := h.StudyCaseService.ListFlashCards(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	fmt.Println(flashcards)
+
+	data.FlashCards = flashcards
+	data.Name = studyCase.Name
+	data.Comments = studyCase.Comment.String
+	if studyCase.Tags.Valid {
+		if err = json.Unmarshal(studyCase.Tags.RawMessage, &data.Tags); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+	}
+
 	c.HTML(http.StatusOK, "study_case.html", gin.H{
-		"study_case": studyCase,
+		"data": data,
+		"id":   id,
 	})
 }
-
-

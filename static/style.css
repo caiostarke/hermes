@@ -6,13 +6,13 @@
 }
 
 .topics {
-    background-color: #0d1321;
+    background: #eaebec;
     padding: 30px 100px;
     margin:0 auto;
+    min-height: 100vh; 
 }
 
 .topics h1{
-    color: aliceblue;
     font-size: 2.9rem;
     margin-bottom: 30px;
     font-weight: 400;
@@ -48,10 +48,13 @@
     cursor: pointer;
     margin-top: 10px;
     width: 100px;
+    font-size: 0.9rem;
+    text-decoration: none;
+    text-align: center;    
 }
 
 .topics--card__link:hover {
-    transition: ease-in 0.7s;
+    transition: ease-in 0.2s;
     background-color: rgba(255,0,255,0.8);
 }
 
@@ -72,4 +75,134 @@
 
 .span--subtitle {
     font-weight: 600;
+}
+
+
+/* Topic Page */
+
+.study_case{
+    
+    background: #eaebec;
+        
+    color: #cb997e;
+
+}
+
+.study_case h1 {
+    color: #6b705c;
+    font-weight: 400;
+    padding-bottom: 50px;
+}
+
+.container {
+    padding: 35px 150px;
+}
+
+.flashcard--topic {
+    box-shadow: 10px 10px 59px -13px rgba(255,0,255,1);
+    background-color: #f4f5f5;
+    color: black;
+
+    border-radius: 2%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding-top: 50px;
+    padding-right: 30px;
+    padding-left: 30px;
+    min-height: 250px;
+}
+
+.flashcards__wrapper {
+    display: grid;
+    gap: 30px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, auto));
+    margin-bottom: 100px;
+}
+
+.card--flashs__topic {
+    font-weight: 800;
+    font-size: 1.3rem;
+    font-weight: 400;
+    text-align: center;
+}
+
+.hidden {
+    display: none
+}
+
+
+.control--panel {
+    color: rgba(255,0,255,1);
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.control--panel button{
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    background-color: rgba(255,0,255,1);
+    padding-top: 10px;
+    padding-bottom: 12px;
+    padding-right: 25px;
+    padding-left: 15px;
+    border-radius: 5px;   
+    color: #f4f5f5;
+    cursor: pointer;
+    font-size: 1.01rem;
+    margin-bottom: 15px;
+}
+
+.control--panel button i{
+    padding-right: 8px;
+}
+
+.control--panel button:hover{
+    transition: ease-in 0.2s;
+    background-color: rgba(255,0,255,0.8);
+}
+
+/* .control--panel__addflash{
+    display: flex;
+    align-items: center;
+    
+} */
+
+.control--panel__addmenu {
+    margin-top: 40px;
+}
+
+.control--panel__addmenu button {
+    width: 100px;
+    margin-top: 15px;
+}
+
+.control--panel__addmenu input{
+    width: 300px;   
+    background-color: rgba(255,0,255,0.4);
+    padding: 10px 0 10px 10px;
+    margin-bottom: 10px;
+    color: white;
+
+    outline: none;
+
+}
+
+.control--panel__addmenu input::placeholder{
+    color: white;
+}   
+
+.flashcard-checkbox {
+    display: none;
+}
+
+.flashcard--topic.selected {
+    border: 2px solid blue;
+}
+
+.hover {
+    cursor: pointer;
 }

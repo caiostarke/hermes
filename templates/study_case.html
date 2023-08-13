@@ -3,9 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> {{ .study_case.Name }} </title>
+    <title>aaa </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet">
+
+    <link rel="stylesheet" href="/static/style.css">
 </head>
-<body>
-    <h1> {{ .study_case.Name }} </h1>
+<body>  
+    <main class="study_case">
+            <div class="container">
+            <h1> {{ .data.Name}}</h1>
+                
+                <div class="flashcards__wrapper">
+                    {{ range .data.FlashCards }}
+                        <div id="{{.ID}}" class="flashcard--topic">
+                            
+                            <div class="front visible">
+                                <p class="card--flashs__topic"> {{ .Front.String}} </p>
+                            </div>
+                            
+                            <div class="back hidden">
+                                <p class="card--flashs__topic"> {{ .Back.String}} </p>
+                            </div>
+
+                            <button class="topics--card__link flip"> Flip  </button>
+
+                            <input type="checkbox" class="flashcard-checkbox">
+                        </div>  
+                    {{ end }}
+                </div>
+                
+                <section class="control--panel">
+                    <div class="control--panel__addflash">
+                        
+                        <button class="add--flashcard"><i class="material-icons">add</i> Add Flash Card</button>
+                        <button class="remove--flashcard" id="selectButton"><i class="material-icons">remove</i> Remove Flash Card</button>
+                        
+                    </div>
+
+                    <form id="jsonForm" class="control--panel__addmenu hidden">
+                        <input type="text" name="front" id="front" placeholder="Front of Flash Card">
+                        <input type="text" name="back" id="back" placeholder="Back of Flash Card">
+
+                        <button class="add--flashcard" onclick="submitJsonForm()">Adicionar</button>
+                    </form>
+
+                </section>
+            </div>
+    </main>
+
+        <script>
+            const flipButtons = document.querySelectorAll(".flip");
+            const addFlashCard = document.querySelector(".add--flashcard")
+
+            const flashcards = document.querySelectorAll(".flashcard--topic");
+            const checkboxes = document.querySelectorAll(".flashcard-checkbox");
+
+            addMenu = document.querySelector(".control--panel__addmenu")
+
+            let selectionMode = false;
+
+            flipButtons.forEach(function(btn) {
+                btn.addEventListener("click", function(e) {
+                    const flashcard = this.closest(".flashcard--topic");
+                    const frontCard = flashcard.querySelector(".front");
+                    const backCard = flashcard.querySelector(".back");
+
+                    frontCard.classList.toggle("hidden");
+                    backCard.classList.toggle("hidden");
+                });
+            });
+
+            addFlashCard.addEventListener("click", function(e) {
+                addMenu.classList.toggle("hidden")
+                addFlashCard.classList.toggle("active")
+                if (addFlashCard.classList.contains("active")) {
+                    addFlashCard.innerHTML = `<i class="material-icons">remove</i> Close Menu`
+                } else {
+                    addFlashCard.innerHTML = `<i class="material-icons">add</i> Add Flash Card`
+                }
+                console.log(addFlashCard.innerHTML)
+            })
+
+            function submitJsonForm() {
+            const form = document.getElementById('jsonForm');
+            const formData = new FormData(form);
+
+            const jsonData = {};
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
+
+            fetch('/topic/{{.id}}/flashcard', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(jsonData),
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+        }
+
+        const selectButton = document.getElementById('selectButton');
+
+        selectButton.addEventListener("click", function() {
+            selectionMode = !selectionMode;
+
+            // Toggle selection mode class for all flashcards
+            flashcards.forEach(flashcard => {
+                if (selectionMode) {
+                    flashcard.classList.add("hover")
+                } else {
+                    flashcard.classList.remove("hover")
+                }
+                flashcard.classList.toggle("selected", false);
+            });
+
+            // Reset checkboxes
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+
+            if (selectionMode) {
+                selectButton.innerText = "Cancel";
+            } else {
+                selectButton.innerText = "Select";
+            }
+        });
+
+     // Apply selection mode to flashcards
+        flashcards.forEach(flashcard => {
+            flashcard.addEventListener("click", function(e) {
+                if (selectionMode) {
+                    flashcard.classList.toggle("selected");
+                }
+            });
+        });
+
+
+        </script>
+
 </body>
-</html>
+</html> 

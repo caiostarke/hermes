@@ -31,6 +31,15 @@ func NewService(repo Repository) *Service {
 	return &Service{queries: repo}
 }
 
+func (service *Service) ListStudyCases() (any, error) {
+	data, err := service.queries.ListStudyCases(context.Background())
+	if err != nil {
+		return nil, err
+	}
+
+	return filterData(data), nil
+}
+
 func (service *Service) CreateStudyCase(name string, tags json.RawMessage, comment string, description string) (StudyCase, error) {
 	s := CreateStudyCaseParams{
 		Name: name,
@@ -84,6 +93,42 @@ func (s *Service) UpdateStudyCase(id string, name string, tags json.RawMessage, 
 	return s.queries.UpdateStudyCase(context.Background(), studyCase)
 }
 
+func filterData(data []StudyCase) any {
+	result := []struct {
+		ID          int64
+		Name        string
+		Tags        string
+		Comment     string
+		Description string
+		NextReview  time.Time
+		CreatedAt   time.Time
+	}{}
+
+	for _, v := range data {
+		d := struct {
+			ID          int64
+			Name        string
+			Tags        string
+			Comment     string
+			Description string
+			NextReview  time.Time
+			CreatedAt   time.Time
+		}{}
+
+		d.ID = v.ID
+		d.Name = v.Name
+		d.Tags = string(v.Tags.RawMessage)
+		d.Comment = v.Comment.String
+		d.Description = v.Description.String
+		d.NextReview = v.NextReview.Time
+		d.CreatedAt = v.CreatedAt.Time
+
+		result = append(result, d)
+	}
+
+	return result
+}
+
 // Implementation of service of FlasCards
 // Would be loose coupled if flashcard repo and services was splitted in different package
 func (s *Service) CreateFlashCard(front string, back string, nextReview time.Time, studyCaseID string) (FlashCard, error) {
@@ -95,7 +140,7 @@ func (s *Service) CreateFlashCard(front string, back string, nextReview time.Tim
 	flashCard := CreateFlashCardParams{
 		Front:       sql.NullString{String: front, Valid: front != ""},
 		Back:        sql.NullString{String: back, Valid: back != ""},
-		NextReview:  sql.NullTime{Time: nextReview, Valid: nextReview.Equal(time.Time{})},
+		NextReview:  sql.NullTime{Time: nextReview},
 		StudyCaseID: sql.NullInt64{Int64: id, Valid: id != 0},
 	}
 
@@ -117,5 +162,5 @@ func (s *Service) ListFlashCards(id string) ([]FlashCard, error) {
 		return nil, err
 	}
 
-	return s.queries.ListFlashCards(context.Background(), sql.NullInt64{Int64: idInt})
+	return s.queries.ListFlashCards(context.Background(), sql.NullInt64{Int64: idInt, Valid: true})
 }

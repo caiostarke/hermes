@@ -22,6 +22,11 @@ func (h *Handler) CreateFlashCardHandler(c *gin.Context) {
 		return
 	}
 
+	if flashCardDTO.Back == "" || flashCardDTO.Front == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "front and back are required"})
+		return
+	}
+
 	currentTime := time.Now()
 
 	flashCard, err := h.StudyCaseService.CreateFlashCard(flashCardDTO.Front, flashCardDTO.Back, currentTime.Add(24*time.Hour), id)
