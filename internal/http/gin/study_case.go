@@ -17,7 +17,7 @@ func (h *Handler) HomeHandler(c *gin.Context) {
 		return
 	}
 
-	c.HTML(http.StatusOK, "index.html", gin.H{
+	c.HTML(http.StatusOK, "index.tmpl", gin.H{
 		"data": studyCases,
 	})
 }
@@ -80,7 +80,7 @@ func (h *Handler) GetStudyCaseHandler(c *gin.Context) {
 		}
 	}
 
-	c.HTML(http.StatusOK, "study_case.html", gin.H{
+	c.HTML(http.StatusOK, "study_case.tmpl", gin.H{
 		"data": data,
 		"id":   id,
 	})
