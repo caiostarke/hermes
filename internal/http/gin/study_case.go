@@ -49,7 +49,7 @@ func (h *Handler) CreateStudyCaseHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"data": studyCase})
+	c.Redirect(http.StatusFound, fmt.Sprintf("/topic/%d", studyCase.ID))
 }
 
 func (h *Handler) GetStudyCaseHandler(c *gin.Context) {
@@ -68,8 +68,6 @@ func (h *Handler) GetStudyCaseHandler(c *gin.Context) {
 		return
 	}
 
-	fmt.Println(flashcards)
-
 	data.FlashCards = flashcards
 	data.Name = studyCase.Name
 	data.Comments = studyCase.Comment.String
@@ -83,5 +81,6 @@ func (h *Handler) GetStudyCaseHandler(c *gin.Context) {
 	c.HTML(http.StatusOK, "study_case.tmpl", gin.H{
 		"data": data,
 		"id":   id,
+		"len":  len(flashcards),
 	})
 }

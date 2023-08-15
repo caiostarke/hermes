@@ -14,6 +14,7 @@
 </head>
 <body>
 
+    <div class="flash-message" id="flash-message"></div>
 
     <main>
         <section class="topics">
@@ -30,7 +31,95 @@
                 {{ end}}
             </div>
         </section>
+
+        <section class="control--panel">
+
+            <div class="container">
+                <div class="control--panel__addflash">
+                
+                <button class="add--flashcard"><i class="material-icons">add</i> Add Flash Card</button>
+                <button class="remove--flashcard" id="selectButton"><i class="material-icons">remove</i> Remove Flash Card</button>
+            </div>
+
+            <form id="jsonForm" class="control--panel__addmenu hidden">
+                <input type="text" name="name" id="name" placeholder="Name of Topic">
+                <input type="text" name="tags" id="tags" placeholder="tags of Topic">
+                <input type="text" name="comment" id="comments" placeholder="comments of Topic">
+                <input type="text" name="description" id="description" placeholder="description of Topic">
+
+                <button class="add--flashcard__action">Adicionar</button>
+            </form>
+            </div>
+
+        </section>
     </main>
+
+    <script> 
+        const addFlashCard = document.querySelector(".add--flashcard")
+        const addMenu = document.querySelector(".control--panel__addmenu")
+
+        addFlashCard.addEventListener("click", function(e) {
+                addMenu.classList.toggle("hidden")
+                addFlashCard.classList.toggle("active")
+                if (addFlashCard.classList.contains("active")) {
+                    addFlashCard.innerHTML = `<i class="material-icons">remove</i> Close Menu`
+                } else {
+                    addFlashCard.innerHTML = `<i class="material-icons">add</i> Add Flash Card`
+                }
+                console.log(addFlashCard.innerHTML)
+            })
+
+        const addActionBtn = document.querySelector(".add--flashcard__action")
+        addActionBtn.addEventListener("click", e => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            submitJsonForm();
+        })
+
+        function submitJsonForm() {
+            const form = document.getElementById('jsonForm');
+            const formData = new FormData(form);
+
+            const jsonData = {};
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
+
+            fetch('/api/v1/study_case', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(jsonData),
+            })
+            .then(result => {
+                if (result.redirected) {
+                    window.location.replace(result.url)
+                } 
+
+                if (result.statusText == 'Bad Request') {
+                    showFlashMessage("Possibily values empty or you trying to duplicate a existing topic", 5000)
+                }
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+        }
+
+        function showFlashMessage(message, timeout = 10000) {
+            const flashMessage = document.getElementById('flash-message');
+            flashMessage.textContent = message;
+            flashMessage.style.display = 'block';
+
+            setTimeout(() => {
+                flashMessage.style.display = 'none';
+            }, timeout);
+        }
+
+    </script>   
     
 </body>
 </html>

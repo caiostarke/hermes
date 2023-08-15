@@ -140,7 +140,7 @@ func (s *Service) CreateFlashCard(front string, back string, nextReview time.Tim
 	flashCard := CreateFlashCardParams{
 		Front:       sql.NullString{String: front, Valid: front != ""},
 		Back:        sql.NullString{String: back, Valid: back != ""},
-		NextReview:  sql.NullTime{Time: nextReview},
+		NextReview:  sql.NullTime{Time: nextReview, Valid: true},
 		StudyCaseID: sql.NullInt64{Int64: id, Valid: id != 0},
 	}
 

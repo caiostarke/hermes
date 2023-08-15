@@ -23,7 +23,7 @@
     display: grid;
     gap: 30px;
     grid-template-columns: repeat(auto-fill, minmax(250px, auto));
-    grid-template-rows: repeat(auto-fit, 280px);
+    grid-template-rows: repeat(auto-fit);
 }
 
 .card {
@@ -32,7 +32,7 @@
     box-shadow: 10px 10px 59px -13px rgba(255,0,255,1);
     background-color: aliceblue;
 
-    padding: 20px 25px;
+    padding: 30px 25px;
     border-radius: 2%;
     display: flex;
     flex-direction: column;
@@ -68,6 +68,10 @@
     padding-bottom: 15px;
 }
 
+.topics--card__comment{
+    padding-bottom: 15px;
+}
+
 .topics--card__description {
     padding-bottom: 15px;
 }
@@ -85,13 +89,18 @@
     background: #eaebec;
         
     color: #cb997e;
+}
 
+.study_case h3{        
+    font-weight: 400;
+    margin-bottom: 5px;
 }
 
 .study_case h1 {
     color: #6b705c;
     font-weight: 400;
     padding-bottom: 50px;
+    margin-top: 20px;
 }
 
 .container {
@@ -111,7 +120,7 @@
     padding-top: 50px;
     padding-right: 30px;
     padding-left: 30px;
-    min-height: 250px;
+    min-height: 300px;
 }
 
 .flashcards__wrapper {
@@ -119,6 +128,7 @@
     gap: 30px;
     grid-template-columns: repeat(auto-fill, minmax(200px, auto));
     margin-bottom: 100px;
+    margin-top: 50px;
 }
 
 .card--flashs__topic {
@@ -200,9 +210,31 @@
 }
 
 .flashcard--topic.selected {
-    border: 2px solid blue;
+    border: 1px solid rgb(21, 21, 83);
 }
 
 .hover {
     cursor: pointer;
 }
+
+.flash-message {
+    position: fixed;
+    top: 40px;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+
+    background-color: rgba(255, 0, 0, 0.9);
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+    
+    color: white; 
+
+    width: 300px;
+
+    text-align: center;
+    border-radius: 5px;
+
+    padding: 10px;
+    display: none;
+    font-weight: 600;
+}
+ugle
