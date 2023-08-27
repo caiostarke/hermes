@@ -17,3 +17,9 @@ CREATE TABLE IF NOT EXISTS flash_cards (
     created_at TIMESTAMP DEFAULT current_timestamp,
     FOREIGN KEY (study_case_id) REFERENCES study_case(id)
 );
+
+CREATE TABLE IF NOT EXISTS ingested_texts {
+    id biserial primary key, 
+    text TEXT not null,
+    created_at TIMESTAMP DEFAULT current_timestamp
+};
